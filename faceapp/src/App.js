@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Clarifai from 'clarifai';
 import Navigation from './AppComponents/Navigation/Navigation';
 import FaceRecognition from './AppComponents/FaceRecognition/FaceRecognition';
+import Signin from './AppComponents/Signin/Signin';
 import Logo from './AppComponents/Logo/Logo';
 import ImageLinkForm from './AppComponents/ImageLinkForm/ImageLinkForm';
 import Rank from './AppComponents/Rank/Rank';
@@ -22,6 +23,8 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
+      //setting the route to be the sign in page when the constructor is run
+      route: 'signin'
     }
   }
 
@@ -60,10 +63,18 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  onRouteChange = (route) => {
+    this.setState({route: route});
+  }
+
   render() {
     return (
       <div className="App">
-        <Navigation />
+        <Navigation onRouteChange ={this.onRouteChange} />
+        { this.state.route === 'signin'
+        ? <Signin onRouteChange={this.onRouteChange} />
+        //if route is not signin, go to the following
+        : <div>
         <Logo />
         <Rank />
         <ImageLinkForm
@@ -71,6 +82,8 @@ class App extends Component {
           onButtonSubmit={this.onButtonSubmit}
         />
         <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+        </div>
+        }
       </div>
     );
   }
