@@ -25,7 +25,8 @@ class App extends Component {
       imageUrl: '',
       box: {},
       //setting the route to be the sign in page when the constructor is run
-      route: 'signin'
+      route: 'signin',
+      isSignedIn: false
     }
   }
 
@@ -44,7 +45,6 @@ class App extends Component {
   }
 
   displayFaceBox = (box) => {
-    console.log(box);
     this.setState({box: box});
   }
   //event.target.value is how we get the value from the user input
@@ -64,14 +64,20 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  //describes the routing through the view, if on sign out, signin is false etc
   onRouteChange = (route) => {
+    if (route === 'signout') {
+      this.setState({isSignedIn: false})
+    } else if (route === 'home') {
+      this.setState({isSignedIn: true})
+    }
     this.setState({route: route});
   }
 
   render() {
     return (
       <div className="App">
-        <Navigation onRouteChange ={this.onRouteChange} />
+        <Navigation isSignedIn={this.state.isSignedIn} onRouteChange ={this.onRouteChange} />
         { this.state.route === 'home'
         ? <div>
         <Logo />
