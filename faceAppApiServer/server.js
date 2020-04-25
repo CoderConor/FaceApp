@@ -6,10 +6,6 @@ const knex = require('knex');
 require('dotenv').config();
 
 
-
-
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
-
 //path to register.js
 const register = require('./controllers/register');
 //path to signin register
@@ -21,13 +17,13 @@ const image = require('./controllers/image');
 
 
 
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 //connection to db using knex
 const db = knex({
     client: 'pg',
     connection: {
         connectionString: process.env.DATABASE_URL,
-        ssl: false,
+        ssl: true,
     }
 });
 
