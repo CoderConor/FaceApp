@@ -57,12 +57,19 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
     const { email, name, password } = req.body;
-    db('users').insert({
+    db('users')
+    .returning('*')
+    .insert({
         email: email,
         name: name,
         joined: new Date()
-    }).then(console.log)
-    res.json(database.users[database.users.length-1]);
+    })
+    //when user successfully registers, json response sent using knex
+    .then(user => {
+    res.json(user[0]);
+})
+//statement to catch any errors 
+.catch(err => res.status(400).json('Existing email, a different email'))
 })
 
 app.get('/profile/:id', (req, res) => {
