@@ -15,26 +15,28 @@ const app = new Clarifai.App({
 }
 );
 
+//state of homepage on signin, each user will not see the image the other searched
+const initialState = {
+    input: '',
+    imageUrl: '',
+    box: {},
+    route: 'signin',
+    isSignedIn: false,
+    user: {
+      id: '',
+      name: '',
+      email: '',
+      entries: 0,
+      joined: ''
+    }
+  }
+
+
 //as you can see at the top, component was imported from react where it was predefined
 class App extends Component {
-  /*Create a state, so app knows what value is entered, remembers it and updates it whenever it is changed*/
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      //setting the route to be the sign in page when the constructor is run
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   loadUser = (data) => {
@@ -90,6 +92,7 @@ class App extends Component {
         .then(count => {
           this.setState(Object.assign(this.state.user, { entries: count}))
         })
+        .catch(console.log)
 
     }
     this.displayFaceBox(this.calculateFaceLocation(response))
@@ -98,10 +101,10 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  //describes the routing through the view, if on sign out, signin is false etc
+  //route change that occurs on sign out
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }
