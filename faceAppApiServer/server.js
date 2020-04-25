@@ -22,7 +22,7 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connection: {
-        host: process.env.DATABASE_UEL,
+        connectionString: process.env.DATABASE_UEL,
         SSL: true,
     }
 });
