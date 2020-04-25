@@ -25,7 +25,7 @@ class Register extends React.Component {
 
   onSubmitSignIn = () => {
     //use fetch to send signin details to server, as a POST method and JSON to stringify the object
-    fetch('http://localhost:3000/register', {
+    fetch('https://boiling-meadow-08475.herokuapp.com/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -22,11 +22,8 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
-        user: 'conor',
-        //using dotenv to assign password to a variable, hid with gitignore
-        password: process.env.DB_PASSWORD,
-        database: 'face-app'
+        host: process.env.DATABASE_UEL,
+        SSL: true,
     }
 });
 
