@@ -38,21 +38,19 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-app.get('/', (req, res) => {
-    res.send(database.users);
-})
+app.get('/', (req, res) => {res.send('its working');})
 //four server endpoints below
 //sign in route linked to signin.js
-app.post('/signin', (req, res) => { signin.signinHandler(req, res, db, bcrypt)})
+app.post('/signin', (req, res) => { signin.signinHandler(req, res, db, bcrypt) })
 //req res to recieve db and bcrypt, dependency injection for registerHandler
 app.post('/register', (req, res) => { register.registerHandler(req, res, db, bcrypt) })
 //link to profile controller
-app.get('/profile/:id', (req, res) => {profile.profileHandlerGet(req, res, db)})
+app.get('/profile/:id', (req, res) => { profile.profileHandlerGet(req, res, db) })
 //user rank increases upon each image search
-app.put('/image', (req, res) => { image.imageHandler(req, res, db)})
-//api call 
-app.post('/imageurl', (req, res) => { image.apiCallHandler(req, res)})
+app.put('/image', (req, res) => { image.imageHandler(req, res, db) })
+//api call endpoint
+app.post('/imageurl', (req, res) => { image.apiCallHandler(req, res) })
 
-app.listen(3000, ()=> {
-    console.log('app is running on port 3000');
-  })
+app.listen(process.env.PORT || 3000, () => {
+    console.log('app is running on port ${process.env.PORT}');
+})
