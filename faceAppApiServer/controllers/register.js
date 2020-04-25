@@ -31,7 +31,7 @@ const registerHandler = (req, res, db, bcrypt) => {
         //rollback on failure
         .catch(trx.rollback)
       })
-      .catch(err => res.status(400).json('unable to register'))
+      .catch(err => res.status(400).json(err))
   }
 
   //exports to app.js
