@@ -7,12 +7,12 @@ const knex = require('knex')
 const db = knex({
     client: 'pg',
     connection: {
-      host : '127.0.0.1',
-      user : 'conor',
-      password : '',
-      database : 'face-app'
+        host: '127.0.0.1',
+        user: 'conor',
+        password: 'Coffee19862Coke',
+        database: 'face-app'
     }
-  });
+});
 
 const app = express();
 
@@ -41,68 +41,67 @@ const database = {
     ]
 }
 
-app.get('/', (req, res)=> {
+app.get('/', (req, res) => {
     res.send(database.users);
 })
 
 //using express method .json instead of .send, has extra features when sending json
 app.post('/signin', (req, res) => {
     if (req.body.email === database.users[0].email &&
-        req.body.password === database.users[0].password){
-            res.json(database.users[0]);
-        } else {
-            res.status(400).json('error logging in');
-        }
+        req.body.password === database.users[0].password) {
+        res.json(database.users[0]);
+    } else {
+        res.status(400).json('error logging in');
+    }
 })
 
 app.post('/register', (req, res) => {
     const { email, name, password } = req.body;
     db('users')
-    .returning('*')
-    .insert({
-        email: email,
-        name: name,
-        joined: new Date()
-    })
-    //when user successfully registers, json response sent using knex
-    .then(user => {
-    res.json(user[0]);
-})
-//statement to catch any errors 
-.catch(err => res.status(400).json('Existing email, a different email'))
+        .returning('*')
+        .insert({
+            email: email,
+            name: name,
+            joined: new Date()
+        })
+        //when user successfully registers, json response sent using knex
+        .then(user => {
+            res.json(user[0]);
+        })
+        //statement to catch any errors 
+        .catch(err => res.status(400).json('Existing email, a different email'))
 })
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            return res.json(user);
-        }
+    db.select('*').from('users').where({
+        id: id
     })
-    if (!found) {
-        res.status(400).json('not found');
-    }
+        .then(user => {
+            if (user.length) {
+                res.json(user[0]);
+            } else {
+                res.status(400).json('Not found')
+            }
+        })
+        .catch(err => res.status(400).json('cannot retreive user'))
+
 })
 
-app.put('/image', (req,res) => {
+//user rank increases upon each image search
+app.put('/image', (req, res) => {
     const { id } = req.body;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            user.entries++
-            return res.json(user.entries);
-        }
+    db('users').where('id', '=', id)
+    .increment('entries', 1)
+    .returning('entries')
+    .then(entries => {
+      res.json(entries[0]);
     })
-    if (!found) {
-        res.status(400).json('not found');
-    }
-})
+    .catch(err => res.status(400).json('unable to get entries'))
+  })
 
-app.listen(3000, ()=> {
-console.log('app is running on port 3000');
+app.listen(3000, () => {
+    console.log('app is running on port 3000');
 })
 
 
