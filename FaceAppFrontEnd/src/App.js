@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Clarifai from 'clarifai';
 import Navigation from './AppComponents/Navigation/Navigation';
 import FaceRecognition from './AppComponents/FaceRecognition/FaceRecognition';
 import Signin from './AppComponents/Signin/Signin';
@@ -9,11 +8,6 @@ import ImageLinkForm from './AppComponents/ImageLinkForm/ImageLinkForm';
 import Rank from './AppComponents/Rank/Rank';
 import './App.css';
 
-//acquired a unique api key from clarifai
-const app = new Clarifai.App({
-  apiKey: '0cb35b8aa39e4c0d8b703226455d5f31'
-}
-);
 
 //state of homepage on signin, each user will not see the image the other searched
 const initialState = {
@@ -76,9 +70,14 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    app.models.predict(
-      Clarifai.FACE_DETECT_MODEL,
-      this.state.input)
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+    .then(response => response.json())
       .then(response => {
         if (response) {
         fetch('http://localhost:3000/image', {

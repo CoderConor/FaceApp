@@ -1,6 +1,10 @@
-
+//register controller, linked to app.js
 const registerHandler = (req, res, db, bcrypt) => {
     const { email, name, password } = req.body;
+    //register security
+    if (!email || !name || !password) {
+        return res.status(400).json('incorrect form submission');
+    }
     const hash = bcrypt.hashSync(password);
     //trx to make code block a transaction, ie when you need to do more than 2 things at once
       db.transaction(trx => {
@@ -30,6 +34,7 @@ const registerHandler = (req, res, db, bcrypt) => {
       .catch(err => res.status(400).json('unable to register'))
   }
 
+  //exports to app.js
 module.exports = {
-      registerHandler: registerHandler
+      registerHandler
   };
