@@ -11,19 +11,20 @@ class Register extends React.Component {
     }
   }
 
-  onNameChange = (event) => {
+
+  handleNameChange = (event) => {
     this.setState({ name: event.target.value })
   }
 
-  onEmailChange = (event) => {
+  handleEmailChange = (event) => {
     this.setState({ email: event.target.value })
   }
 
-  onPasswordChange = (event) => {
+  handlePasswordChange = (event) => {
     this.setState({ password: event.target.value })
   }
 
-  onSubmitSignIn = () => {
+  handleSubmit = (event) => {
     //use fetch to send signin details to server, as a POST method and JSON to stringify the object
     fetch('https://boiling-meadow-08475.herokuapp.com/register', {
       method: 'post',
@@ -40,56 +41,63 @@ class Register extends React.Component {
           this.props.loadUser(user)
           this.props.onRouteChange('home');
         }
-      })
+      });
+      //stops default behabiour of form to redirect, so onRouteChange is used instead
+      event.preventDefault();
   }
 
   render() {
-  return (
-    <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
-    <main className="pa4 black-80">
-      <div className="measure">
-        <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-          <legend className="f1 fw6 ph0 mh0">Register</legend>
-          <div className="mt3">
-            <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
-            <input 
-            className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-            type="text" 
-            name="name" 
-            id="name" 
-            onChange={this.onNameChange}
-            />
-      </div>
-          <div className="mt3">
-            <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-            <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-            type="email" name="email-address" 
-            id="email-address" 
-            onChange={this.onEmailChange}
-
-            />
-      </div>
-            <div className="mv3">
-              <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-              <input 
-              className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-              type="password" 
-              name="password" 
-              id="password" 
-                onChange={this.onPasswordChange}
-              />
-      </div>
-    </fieldset>
-              <div className="">
-                <input 
-                onClick={this.onSubmitSignIn}
-                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
-                type="submit" 
+    return (
+      <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
+        <main className="pa4 black-80">
+          <form onSubmit={this.handleSubmit} className="measure">
+            <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
+              <legend className="f1 fw6 ph0 mh0">Register</legend>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
+                <input
+                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter name"
+                  required
+                  onChange={this.handleNameChange}
+                />
+              </div>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
+                <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="email"
+                  name="email-address"
+                  id="email-address"
+                  placeholder="Email Required"
+                  required
+                  onChange={this.handleEmailChange}
+                />
+              </div>
+              <div className="mv3">
+                <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
+                <input
+                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password required"
+                  required
+                  onChange={this.handlePasswordChange}
+                />
+              </div>
+            </fieldset>
+            <div className="">
+              <input
+                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                type="submit"
                 value="Register" />
-    </div>
-  </div>
-</main>
-</article>
+            </div>
+          </form>
+        </main>
+      </article>
     );
   }
 }

@@ -3,7 +3,7 @@ import Tilt from 'react-tilt';
 import face from './face.png';
 import './Logo.css';
 
-
+//function for logo component
 const Logo = () => {
   return (
     <div className='ma4 mt0'>

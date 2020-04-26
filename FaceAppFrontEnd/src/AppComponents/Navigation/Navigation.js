@@ -1,5 +1,6 @@
 import React from 'react';
 
+//component with no state, pure function 
 const Navigation = ( {onRouteChange, isSignedIn}) => {
         if (isSignedIn) {
             return (

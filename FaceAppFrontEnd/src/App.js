@@ -110,6 +110,7 @@ class App extends Component {
     this.setState({route: route});
   }
 
+  //Different components linked to their individual js files
   render() {
     return (
       <div className="App">
