@@ -1,6 +1,5 @@
 import React from 'react';
 
-//imageUrl defined in app.js, passed as prop. Can enter any image url link
 class Register extends React.Component {
   constructor(props) {
     super(props);

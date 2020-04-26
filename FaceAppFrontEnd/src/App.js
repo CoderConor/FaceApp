@@ -111,6 +111,7 @@ class App extends Component {
   }
 
   //Different components linked to their individual js files
+  //states at the top of the page
   render() {
     return (
       <div className="App">
