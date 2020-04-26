@@ -12,7 +12,7 @@ const apiCallHandler = (req, res) => {
   .then(data => {
     res.json(data);
   })
-  .catch(err => res.status(400).json('Cannot reach API'))
+  .catch(err => res.status(400).json('400 error, make sure it is an image URL'))
 }
 
 
